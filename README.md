@@ -219,5 +219,5 @@ Aplikasi ini sudah dilengkapi file konfigurasi `netlify.toml` dan engine JavaScr
 Proyek ini dirilis di bawah lisensi [MIT](LICENSE). Bebas digunakan untuk keperluan edukasi, riset, maupun pengembangan komersial.
 
 <div align="center">
-  <sub>Dibangun dengan ❤️ oleh <b>Martin Tom Samuel Simorangkir</b></sub>
+  <sub>Dibangun oleh <b>Martin Tom Samuel Simorangkir</b></sub>
 </div>
