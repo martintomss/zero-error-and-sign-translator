@@ -725,5 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize
   loadPracticeCatalog();
-  pollTelemetry();
+  if (!isNetlifyOrStatic) {
+    pollTelemetry();
+  }
 });
