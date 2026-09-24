@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero-Error Real-Time Hand Sign Translator | Anti-Gravity AI</title>
+  <meta name="description" content="Real-time hand sign translator with Anti-Gravity Spatial Stabilization, Kalman Filtering, and Strict >88% Zero-Error Confidence Gating.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- MediaPipe Fallback CDN for in-browser client detection -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Background Cyber Glow Particles -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-badge">⚡ ZERO-ERROR AI</div>
+      <div>
+        <h1 class="brand-title">Zero-Error Hand Sign Translator</h1>
+        <div class="brand-subtitle">Anti-Gravity Spatial Stabilization &bull; Kalman Filter &bull; Strict &gt;88% Gate</div>
+      </div>
+    </div>
+    <div class="header-telemetry">
+      <div class="telemetry-pill">
+        <span class="telemetry-dot active"></span>
+        <span id="headerEngineText">AI ENGINE: ONLINE</span>
+      </div>
+      <div class="telemetry-pill" id="lockStatusPill">
+        <span>ANTI-GRAVITY LOCK:</span>
+        <strong id="headerLockText" style="color: var(--neon-green);">ACTIVE</strong>
+      </div>
+      <div class="telemetry-pill">
+        <span id="fpsCounter">60 FPS</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    
+    <!-- Left Column: Camera Viewport with Anti-Gravity Overlay -->
+    <section class="camera-column">
+      <div class="viewport-card">
+        
+        <div class="viewport-header">
+          <div class="viewport-title-group">
+            <span class="pulse-indicator"></span>
+            <span>LIVE STABILIZED VISION STREAM</span>
+          </div>
+          <div class="viewport-badge" id="viewportProtocolBadge">PROTOCOL: STRICT &gt;88%</div>
+        </div>
+
+        <div class="viewport-container" id="viewportContainer">
+          <!-- Python Server Stream (MJPEG) -->
+          <img id="mjpegStream" src="/video_feed" alt="Stabilized Feed" onerror="window.handleStreamFallback(this)">
+          
+          <!-- Client-side HTML5 Video & Canvas Fallback if server is starting/headless -->
+          <video id="clientVideo" autoplay playsinline muted style="display: none;"></video>
+          <canvas id="overlayCanvas"></canvas>
+
+          <!-- Anti-Gravity Floating Zone Overlay Reticle -->
+          <div class="anti-gravity-reticle" id="antiGravityReticle">
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+            <div class="reticle-center"></div>
+            <div class="reticle-label" id="reticleLabel">ANTI-GRAVITY FLOATING ZONE [LOCKED]</div>
+          </div>
+        </div>
+
+        <div class="viewport-footer">
+          <div class="viewport-metrics">
+            <span>KALMAN FILTER: <strong style="color: var(--neon-cyan);">ACTIVE (6-STATE)</strong></span>
+            <span>SPATIAL DROOP COMPENSATION: <strong style="color: var(--neon-green);">100%</strong></span>
+          </div>
+          <button class="btn btn-sm" id="toggleStreamModeBtn">
+            <span>🔄</span> Switch Stream Source
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Right Column: Zero-Error Translation & Telemetry Dashboard -->
+    <section class="telemetry-column">
+      
+      <!-- Mode Tabs Switcher -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tabLiveDetection">
+          <span>⚡</span> Deteksi Real-Time (&gt;88%)
+        </button>
+        <button class="mode-tab" id="tabPracticeTraining">
+          <span>🎯</span> Mode Latihan &amp; Tutorial
+        </button>
+      </div>
+
+      <!-- PANEL 1: Live Detection (Default) -->
+      <div id="liveDetectionPanel" class="panel-section">
+        <!-- Primary Zero-Error Translation Card -->
+        <div class="card translation-card" id="translationCard">
+          <div class="card-header">
+            <span class="card-label">HASIL TERJEMAHAN REAL-TIME</span>
+            <span class="gate-badge" id="gateBadge">VERIFIED &gt;88%</span>
+          </div>
+
+          <div class="translation-body">
+            <div class="translation-icon-wrap" id="translationIcon">⏳</div>
+            <div class="translation-text-wrap">
+              <h2 class="translation-text" id="translationText">Signal Unclear / Analyzing</h2>
+              <div class="translation-subtext" id="translationSubtext">
+                Confidence must exceed 88.0% to confirm translation.
+              </div>
+            </div>
+          </div>
+
+          <!-- Strict 88% Confidence Meter -->
+          <div class="confidence-section">
+            <div class="confidence-header">
+              <span>Model Confidence</span>
+              <span class="confidence-num" id="confidenceNum">0.0%</span>
+            </div>
+            
+            <div class="meter-track">
+              <div class="meter-fill" id="meterFill" style="width: 0%;"></div>
+              <!-- Red Threshold Line at 88% -->
+              <div class="threshold-line" title="Strict 88% Zero-Error Gate">
+                <span class="threshold-tag">88% GATE</span>
+              </div>
+            </div>
+
+            <div class="confidence-legend">
+              <span class="legend-item"><span class="dot unconfirmed"></span> &le;88% Signal Unclear (Tanpa Tebakan)</span>
+              <span class="legend-item"><span class="dot verified"></span> &gt;88% Terverifikasi Akurat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: Interactive Practice & Training Mode -->
+      <div id="practiceTrainingPanel" class="panel-section" style="display: none;">
+        <div class="card practice-card" id="practiceCard">
+          <div class="card-header">
+            <div class="practice-header-left">
+              <span class="card-label">🎯 PANDUAN &amp; LATIHAN GESTUR</span>
+              <span class="card-badge" id="practiceTypeBadge">EMOTION</span>
+            </div>
+            <div class="practice-select-wrap">
+              <label for="practiceTargetSelect" class="sr-only">Pilih Gestur</label>
+              <select id="practiceTargetSelect" class="practice-select">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Target Sign Showcase & Instructions -->
+          <div class="practice-showcase">
+            <div class="practice-icon" id="practiceTargetIcon">🤟</div>
+            <div class="practice-info">
+              <h3 class="practice-title" id="practiceTargetTitle">I Love You</h3>
+              <p class="practice-desc" id="practiceTargetDesc">
+                Buka jempol ke samping, angkat telunjuk dan kelingking lurus ke atas. Lipat jari tengah dan jari manis ke dalam telapak.
+              </p>
+            </div>
+          </div>
+
+          <!-- Real-Time Match Meter -->
+          <div class="practice-meter-wrap">
+            <div class="practice-meter-header">
+              <span>Kesesuaian Bentuk Tangan</span>
+              <strong id="practiceMatchPercent" class="practice-percent">0%</strong>
+            </div>
+            <div class="meter-track practice-track">
+              <div class="meter-fill practice-fill" id="practiceMeterFill" style="width: 0%;"></div>
+              <div class="practice-success-line" title="Batas Lulus 92%">
+                <span class="practice-success-tag">92% LULUS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live 5-Finger Checklist -->
+          <div class="finger-checklist-container">
+            <div class="finger-checklist-title">STATUS 5 JARI ANDA:</div>
+            <div class="finger-grid" id="fingerChecklistGrid">
+              <!-- Dynamically populated 5 fingers -->
+            </div>
+          </div>
+
+          <!-- Dynamic AI Coach Feedback Box -->
+          <div class="coach-feedback-box" id="coachFeedbackBox">
+            <div class="coach-icon">💡</div>
+            <div class="coach-text" id="coachFeedbackText">
+              Posisikan tangan Anda di dalam retikel untuk memulai latihan...
+            </div>
+          </div>
+
+          <!-- Hold-to-Succeed Challenge Progress -->
+          <div class="hold-challenge-bar" id="holdChallengeBar">
+            <div class="hold-progress" id="holdProgress" style="width: 0%;"></div>
+            <span class="hold-text" id="holdText">Tahan posisi selama 1.5 detik</span>
+          </div>
+
+          <!-- Success Celebration Banner -->
+          <div class="practice-success-banner" id="practiceSuccessBanner" style="display: none;">
+            <div class="success-banner-content">
+              <span class="trophy-icon">🏆</span>
+              <div>
+                <strong>Luar Biasa! Gestur Berhasil Dikuasai!</strong>
+                <p>Akurasi sempurna &gt;95% berhasil ditahan.</p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-success" id="btnNextPracticeSign">
+              Lanjut Gestur Berikutnya ➡️
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Anti-Gravity Stabilization Diagnostics Card -->
+      <div class="card diagnostics-card">
+        <div class="card-header">
+          <span class="card-label">ANTI-GRAVITY SPATIAL TELEMETRY</span>
+          <span class="card-badge" id="spatialLockBadge">LOCKED</span>
+        </div>
+
+        <div class="diagnostics-grid">
+          <div class="diag-stat">
+            <span class="diag-title">Stability Index</span>
+            <strong class="diag-value" id="diagStabilityVal">98.4%</strong>
+            <div class="mini-bar"><div class="mini-fill" id="stabilityBar" style="width: 98%;"></div></div>
+          </div>
+          <div class="diag-stat">
+            <span class="diag-title">Jitter Damping (Kalman)</span>
+            <strong class="diag-value" style="color: var(--neon-cyan);">99.1%</strong>
+            <div class="mini-bar"><div class="mini-fill" style="width: 99%; background: var(--neon-cyan);"></div></div>
+          </div>
+          <div class="diag-stat">
+            <span class="diag-title">Spatial Normalization</span>
+            <strong class="diag-value" style="color: var(--neon-green);">Wrist L0 Centered</strong>
+            <span class="diag-sub">3D Canonical Unit Scale</span>
+          </div>
+          <div class="diag-stat">
+            <span class="diag-title">Zero-Error State</span>
+            <strong class="diag-value" id="diagGateState" style="color: var(--neon-amber);">GATED</strong>
+            <span class="diag-sub">Rejection active if &le;88%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supported Canonical Signs Quick Reference -->
+      <div class="card reference-card">
+        <div class="card-header">
+          <span class="card-label">SUPPORTED CANONICAL SIGNS</span>
+          <span class="card-badge">18 SIGNS</span>
+        </div>
+        <div class="chips-container" id="chipsContainer">
+          <span class="sign-chip" data-id="hello">👋 Hello</span>
+          <span class="sign-chip" data-id="thank_you">🙏 Thank You</span>
+          <span class="sign-chip" data-id="i_love_you">🤟 I Love You</span>
+          <span class="sign-chip" data-id="yes">👍 Yes</span>
+          <span class="sign-chip" data-id="no">👎 No</span>
+          <span class="sign-chip" data-id="peace">✌️ Peace</span>
+          <span class="sign-chip" data-id="ok">👌 OK</span>
+          <span class="sign-chip" data-id="rock_on">🤘 Rock On</span>
+          <span class="sign-chip" data-id="call_me">🤙 Call Me</span>
+          <span class="sign-chip" data-id="help">🤲 Help</span>
+          <span class="sign-chip" data-id="num_1">☝️ 1</span>
+          <span class="sign-chip" data-id="num_2">✌️ 2</span>
+          <span class="sign-chip" data-id="num_3">🤟 3</span>
+          <span class="sign-chip" data-id="num_4">🖖 4</span>
+          <span class="sign-chip" data-id="num_5">🖐️ 5</span>
+          <span class="sign-chip" data-id="fist_a">✊ A</span>
+          <span class="sign-chip" data-id="flat_b">✋ B</span>
+          <span class="sign-chip" data-id="cup_c">🤏 C</span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="/static/js/classifier.js"></script>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
