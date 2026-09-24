@@ -151,8 +151,8 @@ Script ini akan otomatis mendeteksi lingkungan Python, menjalankan server Flask,
 ### Opsi B: Menjalankan via Terminal / CMD / PowerShell
 1. **Clone repository ini:**
    ```bash
-   git clone https://github.com/martintomss/zero-error-hand-sign-translator.git
-   cd zero-error-hand-sign-translator
+   git clone https://github.com/martintomss/zero-error-and-sign-translator.git
+   cd zero-error-and-sign-translator
    ```
 
 2. **Install dependency:**
